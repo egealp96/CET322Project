@@ -32,9 +32,6 @@ namespace EgeAlpProject.Migrations
                     b.Property<int>("CarBrandId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CarModelId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -48,9 +45,6 @@ namespace EgeAlpProject.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -71,8 +65,6 @@ namespace EgeAlpProject.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CarBrandId");
-
-                    b.HasIndex("CarModelId");
 
                     b.ToTable("Cars");
                 });
@@ -420,10 +412,6 @@ namespace EgeAlpProject.Migrations
                         .HasForeignKey("CarBrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("EgeAlpProject.Models.CarModel", "CarModel")
-                        .WithMany()
-                        .HasForeignKey("CarModelId");
                 });
 
             modelBuilder.Entity("EgeAlpProject.Models.CarImage", b =>

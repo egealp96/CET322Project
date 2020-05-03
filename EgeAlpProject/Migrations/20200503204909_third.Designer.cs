@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EgeAlpProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200503184447_initial2")]
-    partial class initial2
+    [Migration("20200503204909_third")]
+    partial class third
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,9 +34,6 @@ namespace EgeAlpProject.Migrations
                     b.Property<int>("CarBrandId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CarModelId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -50,9 +47,6 @@ namespace EgeAlpProject.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -74,8 +68,6 @@ namespace EgeAlpProject.Migrations
 
                     b.HasIndex("CarBrandId");
 
-                    b.HasIndex("CarModelId");
-
                     b.ToTable("Cars");
                 });
 
@@ -93,6 +85,29 @@ namespace EgeAlpProject.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CarBrands");
+                });
+
+            modelBuilder.Entity("EgeAlpProject.Models.CarImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDefaultImage")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("CarImages");
                 });
 
             modelBuilder.Entity("EgeAlpProject.Models.CarModel", b =>
@@ -399,10 +414,15 @@ namespace EgeAlpProject.Migrations
                         .HasForeignKey("CarBrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("EgeAlpProject.Models.CarModel", "CarModel")
-                        .WithMany()
-                        .HasForeignKey("CarModelId");
+            modelBuilder.Entity("EgeAlpProject.Models.CarImage", b =>
+                {
+                    b.HasOne("EgeAlpProject.Models.Car", "Car")
+                        .WithMany("CarImages")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EgeAlpProject.Models.CarModel", b =>

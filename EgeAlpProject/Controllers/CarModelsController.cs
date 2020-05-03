@@ -10,23 +10,23 @@ using EgeAlpProject.Models;
 
 namespace EgeAlpProject.Controllers
 {
-    public class CarsController : Controller
+    public class CarModelsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CarsController(ApplicationDbContext context)
+        public CarModelsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Cars
+        // GET: CarModels
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Cars.Include(c => c.CarBrand);
+            var applicationDbContext = _context.CarModels.Include(c => c.CarBrand);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Cars/Details/5
+        // GET: CarModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +34,42 @@ namespace EgeAlpProject.Controllers
                 return NotFound();
             }
 
-            var car = await _context.Cars
+            var carModel = await _context.CarModels
                 .Include(c => c.CarBrand)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (car == null)
+            if (carModel == null)
             {
                 return NotFound();
             }
 
-            return View(car);
+            return View(carModel);
         }
 
-        // GET: Cars/Create
+        // GET: CarModels/Create
         public IActionResult Create()
         {
             ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Name");
             return View();
         }
 
-        // POST: Cars/Create
+        // POST: CarModels/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MemberId,Name,CarBrandId,year,VehicleKm,FuelType,AvgCons,Price,Description,Location,CreatedDate")] Car car)
+        public async Task<IActionResult> Create([Bind("Id,Name,CarBrandId")] CarModel carModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(car);
+                _context.Add(carModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Name", car.CarBrandId);
-            return View(car);
+            ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Name", carModel.CarBrandId);
+            return View(carModel);
         }
 
-        // GET: Cars/Edit/5
+        // GET: CarModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +77,23 @@ namespace EgeAlpProject.Controllers
                 return NotFound();
             }
 
-            var car = await _context.Cars.FindAsync(id);
-            if (car == null)
+            var carModel = await _context.CarModels.FindAsync(id);
+            if (carModel == null)
             {
                 return NotFound();
             }
-            ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Name", car.CarBrandId);
-            return View(car);
+            ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Name", carModel.CarBrandId);
+            return View(carModel);
         }
 
-        // POST: Cars/Edit/5
+        // POST: CarModels/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MemberId,Name,CarBrandId,year,VehicleKm,FuelType,AvgCons,Price,Description,Location,CreatedDate")] Car car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CarBrandId")] CarModel carModel)
         {
-            if (id != car.Id)
+            if (id != carModel.Id)
             {
                 return NotFound();
             }
@@ -102,12 +102,12 @@ namespace EgeAlpProject.Controllers
             {
                 try
                 {
-                    _context.Update(car);
+                    _context.Update(carModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CarExists(car.Id))
+                    if (!CarModelExists(carModel.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +118,11 @@ namespace EgeAlpProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Name", car.CarBrandId);
-            return View(car);
+            ViewData["CarBrandId"] = new SelectList(_context.CarBrands, "Id", "Name", carModel.CarBrandId);
+            return View(carModel);
         }
 
-        // GET: Cars/Delete/5
+        // GET: CarModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +130,31 @@ namespace EgeAlpProject.Controllers
                 return NotFound();
             }
 
-            var car = await _context.Cars
+            var carModel = await _context.CarModels
                 .Include(c => c.CarBrand)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (car == null)
+            if (carModel == null)
             {
                 return NotFound();
             }
 
-            return View(car);
+            return View(carModel);
         }
 
-        // POST: Cars/Delete/5
+        // POST: CarModels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var car = await _context.Cars.FindAsync(id);
-            _context.Cars.Remove(car);
+            var carModel = await _context.CarModels.FindAsync(id);
+            _context.CarModels.Remove(carModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CarExists(int id)
+        private bool CarModelExists(int id)
         {
-            return _context.Cars.Any(e => e.Id == id);
+            return _context.CarModels.Any(e => e.Id == id);
         }
     }
 }

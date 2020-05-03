@@ -14,6 +14,17 @@ namespace EgeAlpProject.Data
 
         public DbSet<Member> Members { get; set; }
 
+        public DbSet<Car> Cars { get; set; }
+
+        public DbSet<CarBrand> CarBrands { get; set; }
+
+        public DbSet<CarModel> CarModels { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Rental> Rentals { get; set; }
+
+        public DbSet<CarImage> CarImages { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
     : base(options)
